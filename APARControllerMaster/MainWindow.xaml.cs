@@ -46,7 +46,6 @@ namespace APARControllerMaster
             byte[] recvData = new byte[_port.BytesToRead];
             _port.Read(recvData, 0, _port.BytesToRead);
 
-            SerialRecvInfos.Add(recvData.ToString());
         }
         #endregion
 

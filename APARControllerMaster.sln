@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APARControllerMaster", "APARControllerMaster\APARControllerMaster.csproj", "{5999E79E-1DD2-4C08-BA73-5D0246C8D0B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestAPAR", "UnitTestAPAR\UnitTestAPAR.csproj", "{046583FF-CEAE-4531-967D-D993656A5628}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5999E79E-1DD2-4C08-BA73-5D0246C8D0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5999E79E-1DD2-4C08-BA73-5D0246C8D0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5999E79E-1DD2-4C08-BA73-5D0246C8D0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5999E79E-1DD2-4C08-BA73-5D0246C8D0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{046583FF-CEAE-4531-967D-D993656A5628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{046583FF-CEAE-4531-967D-D993656A5628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{046583FF-CEAE-4531-967D-D993656A5628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{046583FF-CEAE-4531-967D-D993656A5628}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF58BD93-3F96-477A-AC65-A8CD08462C5B}
+	EndGlobalSection
+EndGlobal

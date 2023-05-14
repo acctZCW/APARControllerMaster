@@ -39,7 +39,7 @@ namespace APARControllerMaster
                     throw;
                 }
 
-                Port.DataReceived += new SerialDataReceivedEventHandler(ReceiveData);
+                //Port.DataReceived += new SerialDataReceivedEventHandler(ReceiveData);
             }
             else
             {

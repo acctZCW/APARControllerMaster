@@ -15,7 +15,7 @@ namespace UnitTestAPAR
         public void GenerateFrameTest()
         {
             string content = "HelloWorld";
-            byte[] frame = APARProtocol.GenerateFrame(Encoding.ASCII.GetBytes(content),1);
+            byte[] frame = APARProtocol.GenerateFrame(Encoding.ASCII.GetBytes(content).ToList(),1);
             Assert.That(frame[15],Is.EqualTo(0xCB));
         }
     }

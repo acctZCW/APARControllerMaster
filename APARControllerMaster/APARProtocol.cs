@@ -10,12 +10,12 @@ namespace APARControllerMaster
     public class APARProtocol
     {
 
-        public static byte[] GenerateFrame(byte[] content, byte frameType)
+        public static byte[] GenerateFrame(List<byte> content, byte frameType)
         {
             List<byte> frame = new List<byte>();
             frame.AddRange(Encoding.ASCII.GetBytes("BI"));
             frame.Add(frameType);
-            frame.AddRange(UInt16ToBytes((UInt16)content.Length));
+            frame.AddRange(UInt16ToBytes((UInt16)content.Count));
             frame.AddRange(content);
             frame.Add(CRC8Maxim(frame));
             frame.AddRange(Encoding.ASCII.GetBytes("T"));

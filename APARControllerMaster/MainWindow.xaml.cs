@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -45,6 +47,8 @@ namespace APARControllerMaster
             // get the serial data
             byte[] recvData = new byte[_port.BytesToRead];
             _port.Read(recvData, 0, _port.BytesToRead);
+            string str = System.Text.Encoding.ASCII.GetString(recvData);
+            SerialRecvInfo += DateTime.Now.ToLongTimeString() + " " + str + "\r\n";
 
         }
         #endregion
@@ -60,6 +64,7 @@ namespace APARControllerMaster
         }
 
         #region Binding Data
+
         private List<string> serialList;
         public List<string> SerialList
         {
@@ -92,8 +97,21 @@ namespace APARControllerMaster
                 RaisePropertyChanged(nameof(SerialRecvInfo));
             }
         }
+
+        private DataTable unitDataTable;
+        public DataTable UnitDataTable
+        {
+            get { return unitDataTable; }
+            set
+            {
+                unitDataTable = value;
+                RaisePropertyChanged(nameof(UnitDataTable));
+            }
+        }
+
         #endregion
 
+        #region Click Event
         private void OpenSerialButton_Click(object sender, RoutedEventArgs e)
         {
             if(this.OpenSerialButton.Content.Equals("开启串口"))
@@ -150,5 +168,34 @@ namespace APARControllerMaster
             }
             
         }
+
+
+        private void ClearRecvButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.SerialRecvInfo = "";
+        }
+
+        private void ReadCSVButton_Click(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new OpenFileDialog()
+            {
+                Filter = "CSV Files(*.csv)|*.csv"
+            };
+            if (fileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    this.UnitDataTable = APARCommands.ReadDataFromCSV(fileDialog.FileName);
+                }
+                catch (Exception e1)
+                {
+
+                    MessageBox.Show(e1.Message);
+                    return;
+                }
+            }
+            
+        }
+        #endregion
     }
 }

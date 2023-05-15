@@ -97,28 +97,29 @@
                     <StackPanel HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
-                        <Button Width="70" Height="30"
-                                Margin="5">
+                        <Button x:Name="ReadCSVButton" Width="70" Height="30"
+                                Margin="5" Click="ReadCSVButton_Click">
                             批量读取
                         </Button>
-                        <Button Width="70" Height="30"
-                                Margin="5">
-                            清空输入
+                        <Button Name="ClearRecvButton" Width="70" Height="30"
+                                Margin="5" Click="ClearRecvButton_Click">
+                            清空信息
                         </Button>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <DataGrid>
+                    <DataGrid Name="UnitDataGrid" IsReadOnly="True" ItemsSource="{Binding Path=UnitDataTable}"
+                              AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="设备类型" />
-                            <DataGridTextColumn Width="*" Header="设备地址" />
-                            <DataGridTextColumn Width="*" Header="设备参数" />
+                            <DataGridTextColumn Width="*" Header="设备类型" Binding="{Binding Path=UnitType}"/>
+                            <DataGridTextColumn Width="*" Header="设备地址" Binding="{Binding Path=UnitAddr}"/>
+                            <DataGridTextColumn Width="*" Header="设备参数" Binding="{Binding Path=UnitData}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Grid>
             <Grid Grid.Column="1">
-                <TextBox FontFamily="Consolas" Text="{Binding Path=SerialRecvInfo}" />
+                <TextBox IsReadOnly="True" FontFamily="Consolas" VerticalScrollBarVisibility="Auto" Text="{Binding Path=SerialRecvInfo, Mode=OneWay}" />
             </Grid>
         </Grid>
     </Grid>

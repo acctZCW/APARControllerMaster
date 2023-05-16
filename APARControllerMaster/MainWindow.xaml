@@ -75,9 +75,10 @@
                                 Click="SingleInputButton_Click">
                             单次输入
                         </Button>
-                        <Button Name="ClearAllButton" Width="60"
-                                Height="30" Margin="5">
-                            清空输入
+                        <Button Name="ClearRecvButton" Width="60"
+                                Height="30" Margin="5"
+                                Click="ClearRecvButton_Click">
+                            清空信息
                         </Button>
                     </StackPanel>
                 </UniformGrid>
@@ -97,29 +98,42 @@
                     <StackPanel HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
-                        <Button x:Name="ReadCSVButton" Width="70" Height="30"
-                                Margin="5" Click="ReadCSVButton_Click">
+                        <Button x:Name="ReadCSVButton" Width="70"
+                                Height="30" Margin="5"
+                                Click="ReadCSVButton_Click">
                             批量读取
                         </Button>
-                        <Button Name="ClearRecvButton" Width="70" Height="30"
-                                Margin="5" Click="ClearRecvButton_Click">
-                            清空信息
+                        <Button Name="BatchInputButton" Width="70"
+                                Height="30" Margin="5"
+                                Click="BatchInputButton_Click">
+                            批量输入
                         </Button>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <DataGrid Name="UnitDataGrid" IsReadOnly="True" ItemsSource="{Binding Path=UnitDataTable}"
-                              AutoGenerateColumns="False">
+                    <DataGrid Name="UnitDataGrid"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding Path=UnitDataTable}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="设备类型" Binding="{Binding Path=UnitType}"/>
-                            <DataGridTextColumn Width="*" Header="设备地址" Binding="{Binding Path=UnitAddr}"/>
-                            <DataGridTextColumn Width="*" Header="设备参数" Binding="{Binding Path=UnitData}"/>
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Path=UnitType}"
+                                                Header="设备类型" />
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Path=UnitAddr}"
+                                                Header="设备地址" />
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Path=UnitData}"
+                                                Header="设备参数" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Grid>
             <Grid Grid.Column="1">
-                <TextBox IsReadOnly="True" FontFamily="Consolas" VerticalScrollBarVisibility="Auto" Text="{Binding Path=SerialRecvInfo, Mode=OneWay}" />
+                <TextBox Margin="5" FontFamily="Consolas"
+                         IsReadOnly="True"
+                         Text="{Binding Path=SerialRecvInfo, Mode=OneWay}"
+                         VerticalScrollBarVisibility="Auto" />
             </Grid>
         </Grid>
     </Grid>

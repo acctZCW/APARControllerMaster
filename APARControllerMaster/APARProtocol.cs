@@ -10,11 +10,15 @@ namespace APARControllerMaster
     public class APARProtocol
     {
 
-        public static byte[] GenerateFrame(List<byte> content, byte frameType)
+        public static byte[] GenerateFrame(List<byte> content, int frameType)
         {
+            if(frameType > 255)
+            {
+                throw new ArgumentException("传入的帧类型不正确！");
+            }
             List<byte> frame = new List<byte>();
             frame.AddRange(Encoding.ASCII.GetBytes("BI"));
-            frame.Add(frameType);
+            frame.Add((byte)frameType);
             frame.AddRange(UInt16ToBytes((UInt16)content.Count));
             frame.AddRange(content);
             frame.Add(CRC8Maxim(frame));

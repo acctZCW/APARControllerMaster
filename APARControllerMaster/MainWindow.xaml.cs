@@ -152,13 +152,13 @@ namespace APARControllerMaster
                 MessageBox.Show("串口尚未打开！");
                 return;
             }
-            int unitType = this.UnitTypeComboBox.SelectedIndex;
+            string unitType = (string)this.UnitTypeComboBox.SelectedValue;
             int unitAddr = UInt16.Parse(this.UnitAddrTextBox.Text);
             double unitData = Double.Parse(this.UnitDataTextBox.Text);
             try
             {
                 List<byte> command = APARCommands.GenerateCommand(unitType, unitAddr, unitData);
-                byte[] frame = APARProtocol.GenerateFrame(command, (byte)unitType);
+                byte[] frame = APARProtocol.GenerateFrame(command, APARCommands.GetUnitTypeInt(unitType));
                 APARSerial.SendData(frame);
             }
             catch (Exception e1)
@@ -167,6 +167,43 @@ namespace APARControllerMaster
                 return;
             }
             
+        }
+
+        private void BatchInputButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.UnitDataTable.Rows.Count < 1)
+            {
+                MessageBox.Show("尚未读取任何数据！");
+                return;
+            }
+            if (APARSerial.Port == null || !APARSerial.Port.IsOpen)
+            {
+                MessageBox.Show("串口尚未打开！");
+                return;
+            }
+
+            List<DataTable> dataList = this.UnitDataTable.AsEnumerable()
+                            .GroupBy(row => row.Field<string>("UnitType"))
+                            .Select(g => g.CopyToDataTable())
+                            .ToList();
+            try
+            {
+                for(int i = 0; i < dataList.Count; i++)
+                {
+                    string type = dataList[i].Rows[0].Field<string>(0);
+                    List<byte> command = APARCommands.GenerateCommand(
+                        type,
+                        dataList[i].AsEnumerable().Select(r => r.Field<int>("UnitAddr")).ToList(),
+                        dataList[i].AsEnumerable().Select(r => r.Field<double>("UnitData")).ToList());
+                    byte[] frame = APARProtocol.GenerateFrame(command, APARCommands.GetUnitTypeInt(type));
+                    APARSerial.SendData(frame);
+                }
+            }
+            catch(Exception e1)
+            {
+                MessageBox.Show(e1.Message);
+                return;
+            }
         }
 
 
@@ -197,5 +234,7 @@ namespace APARControllerMaster
             
         }
         #endregion
+
+        
     }
 }

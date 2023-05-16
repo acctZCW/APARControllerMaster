@@ -17,17 +17,54 @@ namespace APARControllerMaster
             PE43703
         };
 
-        public static List<byte> GenerateCommand(int type, int addr, double data)
+        public static int GetUnitTypeInt(string unitTypeStr)
+        {
+            UnitType type;
+            try
+            {
+                type = (UnitType)(Enum.Parse(typeof(UnitType), unitTypeStr));
+            }
+            catch
+            {
+                throw new Exception("传入的设备类型不存在！");
+            }
+            return (int)type;
+        }
+
+        public static List<byte> GenerateCommand(string type, int addr, double data)
         {
             switch (type)
             {
-                case (int)UnitType.PE44820:
+                case nameof(UnitType.PE44820):
                     return PE44820Command(addr, data);
-                case (int)UnitType.PE43703:
+                case nameof(UnitType.PE43703):
                     return PE43703Command(addr, data);
                 default:
                     throw new Exception("设备类型不正确！");
             }
+        }
+
+        public static List<byte> GenerateCommand(string type, List<int> addrs, List<double> datas)
+        {
+            var commands = new List<byte>();
+            switch (type)
+            {
+                case nameof(UnitType.PE44820):
+                    for(int i = 0; i < addrs.Count; i++)
+                    {
+                        commands.AddRange(PE44820Command(addrs[i], datas[i]));
+                    }
+                    break;
+                case nameof(UnitType.PE43703):
+                    for (int i = 0; i < addrs.Count; i++)
+                    {
+                        commands.AddRange(PE43703Command(addrs[i], datas[i]));
+                    }
+                    break;
+                default:
+                    throw new Exception("设备类型不正确！");
+            }
+            return commands;
         }
 
         public static DataTable ReadDataFromCSV(string filepath)
@@ -41,9 +78,9 @@ namespace APARControllerMaster
                 string strLine = "";
                 string[] arrLine; // str split to arr
 
-                dt.Columns.Add(new DataColumn("UnitType"));
-                dt.Columns.Add(new DataColumn("UnitAddr"));
-                dt.Columns.Add(new DataColumn("UnitData"));
+                dt.Columns.Add(new DataColumn("UnitType",typeof(string)));
+                dt.Columns.Add(new DataColumn("UnitAddr",typeof(int)));
+                dt.Columns.Add(new DataColumn("UnitData",typeof(double)));
 
                 while ((strLine = sr.ReadLine()) != null)
                 {
@@ -59,6 +96,9 @@ namespace APARControllerMaster
 
                 sr.Close();
                 fs.Close();
+
+                dt.DefaultView.Sort = "UnitType DESC";
+
                 return dt;
             }
             else
@@ -86,9 +126,11 @@ namespace APARControllerMaster
                 throw new Exception("衰减取值应当在0到32之间！");
             }
             int attenuation_i = (int)(attenuation / 0.25);
-            List<byte> command = new List<byte>(2);
-            command[0] = (byte)addr;
-            command[1] = (byte)attenuation_i;
+            List<byte> command = new List<byte>
+            {
+                (byte)addr,
+                (byte)attenuation_i
+            };
             return command;
         }
     }

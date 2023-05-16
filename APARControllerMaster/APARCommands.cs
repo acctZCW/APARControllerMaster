@@ -13,8 +13,8 @@ namespace APARControllerMaster
     {
         private enum UnitType
         {
-            PE44820 = 0,
-            PE43703
+            PE44820 = 2,
+            PE43703 = 3
         };
 
         public static int GetUnitTypeInt(string unitTypeStr)

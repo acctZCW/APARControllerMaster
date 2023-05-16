@@ -124,7 +124,7 @@ namespace APARControllerMaster
                 }
                 try
                 {
-                    APARSerial.OpenClosePort(PortName, 256000);
+                    APARSerial.OpenClosePort(PortName, 512000);
                     APARSerial.Port.DataReceived += new SerialDataReceivedEventHandler(AddText);
                 }
                 catch (IOException)

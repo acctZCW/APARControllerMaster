@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -45,11 +46,11 @@ namespace APARControllerMaster
         {
             SerialPort _port = (SerialPort)sender;
             // get the serial data
+
             byte[] recvData = new byte[_port.BytesToRead];
             _port.Read(recvData, 0, _port.BytesToRead);
-            string str = System.Text.Encoding.ASCII.GetString(recvData);
+            string str = Encoding.ASCII.GetString(recvData);
             SerialRecvInfo += DateTime.Now.ToLongTimeString() + " " + str + "\r\n";
-
         }
         #endregion
 

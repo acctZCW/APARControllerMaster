@@ -130,10 +130,14 @@
                 </Grid>
             </Grid>
             <Grid Grid.Column="1">
-                <TextBox Margin="5" FontFamily="Consolas"
-                         IsReadOnly="True"
-                         Text="{Binding Path=SerialRecvInfo, Mode=OneWay}"
-                         VerticalScrollBarVisibility="Auto" />
+                <Border Margin="5" BorderBrush="LightGray"
+                        BorderThickness="1">
+                    <ScrollViewer>
+                        <TextBlock Name="SerialRecvInfoTextBlock"
+                                   FontFamily="Consolas"
+                                   Text="{Binding Path=SerialRecvInfo, Mode=OneWay}" />
+                    </ScrollViewer>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

@@ -130,7 +130,7 @@ namespace APARControllerMaster
                 }
                 try
                 {
-                    serial.OpenClosePort(PortName, 256000);
+                    serial.OpenClosePort(PortName, 512000);
                     serial.Port.DataReceived += new SerialDataReceivedEventHandler(AddText);
                 }
                 catch (IOException)
@@ -142,7 +142,7 @@ namespace APARControllerMaster
             }
             else
             {
-                serial.OpenClosePort(PortName, 256000);
+                serial.OpenClosePort(PortName, 512000);
                 this.OpenSerialButton.Content = "开启串口";
             }
         }

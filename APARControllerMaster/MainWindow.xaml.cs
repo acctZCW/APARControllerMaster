@@ -50,9 +50,25 @@ namespace APARControllerMaster
             SerialPort _port = (SerialPort)sender;
             // get the serial data
 
-            byte[] recvData = new byte[_port.BytesToRead];
-            _port.Read(recvData, 0, _port.BytesToRead);
-            string str = Encoding.ASCII.GetString(recvData);
+            //byte[] recvData = new byte[_port.BytesToRead];
+            //_port.Read(recvData, 0, _port.BytesToRead);
+            //string str = Encoding.ASCII.GetString(recvData);
+            int code = _port.ReadByte();
+            string str;
+            switch (code)
+            {
+                case 1:
+                    str = "parse ok"; break;
+                case 2:
+                    str = "exec ok"; break;
+                case 128:
+                    str = "parse error"; break;
+                case 129:
+                    str = "exec error"; break;
+                default:
+                    str = "unknown code"; break;
+            }
+
             SerialRecvInfo += DateTime.Now.ToLongTimeString() + " " + str + "\r\n";
         }
         #endregion
@@ -161,12 +177,15 @@ namespace APARControllerMaster
             }
             string unitType = (string)this.UnitTypeComboBox.SelectedValue;
             int unitAddr = UInt16.Parse(this.UnitAddrTextBox.Text);
-            double unitData = Double.Parse(this.UnitDataTextBox.Text);
+            double unitData = double.Parse(this.UnitDataTextBox.Text);
             try
             {
+                // get command
                 List<byte> command = APARCommands.GenerateCommand(unitType, unitAddr, unitData);
+                // generate frame.
                 byte[] frame = APARProtocol.GenerateFrame(command, APARCommands.GetUnitTypeInt(unitType));
                 serial.SendData(frame);
+                
             }
             catch (Exception e1)
             {

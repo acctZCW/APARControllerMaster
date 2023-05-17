@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Controls;
 
 namespace APARControllerMaster
 {
     public class APARSerial
     {
         private SerialPort port;
+
+        private List<List<byte>> sendLogs;
+
         public SerialPort Port
         {
             get { return port; }
@@ -67,6 +71,7 @@ namespace APARControllerMaster
                 try
                 {
                     Port.Write(data, 0, data.Length);
+                    sendLogs.Add(data.ToList()); // store the frame into logs.
                 }
                 catch (Exception)
                 {

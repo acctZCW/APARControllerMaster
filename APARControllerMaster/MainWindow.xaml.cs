@@ -54,22 +54,8 @@ namespace APARControllerMaster
             //_port.Read(recvData, 0, _port.BytesToRead);
             //string str = Encoding.ASCII.GetString(recvData);
             int code = _port.ReadByte();
-            string str;
-            switch (code)
-            {
-                case 1:
-                    str = "parse ok"; break;
-                case 2:
-                    str = "exec ok"; break;
-                case 128:
-                    str = "parse error"; break;
-                case 129:
-                    str = "exec error"; break;
-                default:
-                    str = "unknown code"; break;
-            }
-
-            SerialRecvInfo += DateTime.Now.ToLongTimeString() + " " + str + "\r\n";
+            SerialRecvInfo += 
+                DateTime.Now.ToLongTimeString() + " " + APARCommands.GetStatusMsg(code) + "\r\n";
         }
         #endregion
 

@@ -17,6 +17,30 @@ namespace APARControllerMaster
             PE43703 = 3
         };
 
+        private static Dictionary<int, string> StatusDict = new Dictionary<int, string>()
+        {
+            { 1, "[INFO] ok" },
+            { 2, "[INFO] parse ok"},
+            { 3, "[INFO] exec ok" },
+            { 128, "[ERROR] parse error" },
+            { 129, "[ERROR] exec error" },
+            { 130, "[ERROR] param out of bound" },
+            { 131, "[ERROR] addr out of bound" },
+            { 132, "[ERROR] gpio write error" }
+        };
+
+        public static string GetStatusMsg(int code)
+        {
+            if (StatusDict.Keys.Contains(code))
+            {
+                return StatusDict[code];
+            }
+            else
+            {
+                return "[UNDEFINED] undefined code";
+            }
+        }
+
         public static int GetUnitTypeInt(string unitTypeStr)
         {
             UnitType type;

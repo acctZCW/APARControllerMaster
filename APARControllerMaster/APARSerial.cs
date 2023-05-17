@@ -14,7 +14,7 @@ namespace APARControllerMaster
     {
         private SerialPort port;
 
-        private List<List<byte>> sendLogs;
+        private List<List<byte>> sendLogs = new List<List<byte>>();
 
         public SerialPort Port
         {

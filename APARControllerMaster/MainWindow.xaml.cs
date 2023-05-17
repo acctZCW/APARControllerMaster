@@ -27,6 +27,9 @@ namespace APARControllerMaster
     /// </summary>
     public partial class MainWindow : Window,INotifyPropertyChanged
     {
+
+        private APARSerial serial;
+
         #region Delegate and Event
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,9 +61,12 @@ namespace APARControllerMaster
         {
             InitializeComponent();
             this.DataContext = this; // register the context
-            SerialList = APARSerial.GetPortList(); // Get Ports Default
-            this.UnitTypeComboBox.ItemsSource = new string[] { "PE44820", "PE43703" }; // set unit list.
 
+            serial = new APARSerial();
+            serial.Port = new SerialPort();
+            SerialList = serial.GetPortList(); // Get Ports Default
+
+            this.UnitTypeComboBox.ItemsSource = new string[] { "PE44820", "PE43703" }; // set unit list.
             AddTextEvent += AddText; // Add event handler for AddTextEvent;
         }
 
@@ -124,8 +130,8 @@ namespace APARControllerMaster
                 }
                 try
                 {
-                    APARSerial.OpenClosePort(PortName, 256000);
-                    APARSerial.Port.DataReceived += new SerialDataReceivedEventHandler(AddText);
+                    serial.OpenClosePort(PortName, 256000);
+                    serial.Port.DataReceived += new SerialDataReceivedEventHandler(AddText);
                 }
                 catch (IOException)
                 {
@@ -136,7 +142,7 @@ namespace APARControllerMaster
             }
             else
             {
-                APARSerial.OpenClosePort(PortName, 256000);
+                serial.OpenClosePort(PortName, 256000);
                 this.OpenSerialButton.Content = "开启串口";
             }
         }
@@ -148,7 +154,7 @@ namespace APARControllerMaster
                 MessageBox.Show("请选择设备类型！");
                 return;
             }
-            if(APARSerial.Port == null || !APARSerial.Port.IsOpen)
+            if(serial.Port == null || !serial.Port.IsOpen)
             {
                 MessageBox.Show("串口尚未打开！");
                 return;
@@ -160,7 +166,7 @@ namespace APARControllerMaster
             {
                 List<byte> command = APARCommands.GenerateCommand(unitType, unitAddr, unitData);
                 byte[] frame = APARProtocol.GenerateFrame(command, APARCommands.GetUnitTypeInt(unitType));
-                APARSerial.SendData(frame);
+                serial.SendData(frame);
             }
             catch (Exception e1)
             {
@@ -177,7 +183,7 @@ namespace APARControllerMaster
                 MessageBox.Show("尚未读取任何数据！");
                 return;
             }
-            if (APARSerial.Port == null || !APARSerial.Port.IsOpen)
+            if (serial.Port == null || !serial.Port.IsOpen)
             {
                 MessageBox.Show("串口尚未打开！");
                 return;
@@ -197,7 +203,7 @@ namespace APARControllerMaster
                         dataList[i].AsEnumerable().Select(r => r.Field<int>("UnitAddr")).ToList(),
                         dataList[i].AsEnumerable().Select(r => r.Field<double>("UnitData")).ToList());
                     byte[] frame = APARProtocol.GenerateFrame(command, APARCommands.GetUnitTypeInt(type));
-                    APARSerial.SendData(frame);
+                    serial.SendData(frame);
                 }
             }
             catch(Exception e1)
@@ -206,7 +212,6 @@ namespace APARControllerMaster
                 return;
             }
         }
-
 
         private void ClearRecvButton_Click(object sender, RoutedEventArgs e)
         {

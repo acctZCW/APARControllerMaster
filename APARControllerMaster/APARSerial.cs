@@ -11,19 +11,22 @@ namespace APARControllerMaster
 {
     public class APARSerial
     {
-        public static SerialPort Port = null;
+        private SerialPort port;
+        public SerialPort Port
+        {
+            get { return port; }
+            set { port = value; }
+        }
 
-        public static List<string> GetPortList()
+        public List<string> GetPortList()
         {
             return SerialPort.GetPortNames().ToList();
         }
 
-        public static void OpenClosePort(string comName, int baudRate)
+        public void OpenClosePort(string comName, int baudRate)
         {
-            if(Port == null || !Port.IsOpen)
+            if(!Port.IsOpen)
             {
-                Port = new SerialPort();
-
                 Port.PortName = comName;
                 Port.BaudRate = baudRate;
                 Port.DataBits = 8;
@@ -47,7 +50,7 @@ namespace APARControllerMaster
             }
         }
 
-        public static void ReceiveData(object sender, SerialDataReceivedEventArgs e)
+        public void ReceiveData(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort _port = (SerialPort)sender;
             // get the serial data
@@ -57,7 +60,7 @@ namespace APARControllerMaster
             Debug.WriteLine("Received data: " + recvData);
         }
 
-        public static void SendData(byte[] data)
+        public void SendData(byte[] data)
         {
             if(Port != null && Port.IsOpen)
             {

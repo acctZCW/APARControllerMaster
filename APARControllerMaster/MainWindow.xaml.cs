@@ -50,12 +50,15 @@ namespace APARControllerMaster
             SerialPort _port = (SerialPort)sender;
             // get the serial data
 
-            //byte[] recvData = new byte[_port.BytesToRead];
-            //_port.Read(recvData, 0, _port.BytesToRead);
-            //string str = Encoding.ASCII.GetString(recvData);
-            int code = _port.ReadByte();
-            SerialRecvInfo += 
-                DateTime.Now.ToLongTimeString() + " " + APARCommands.GetStatusMsg(code) + "\r\n";
+            byte[] recvData = new byte[_port.BytesToRead];
+            _port.Read(recvData, 0, _port.BytesToRead);
+            for(int i = 0; i < recvData.Length; i++)
+            {
+                int code = recvData[i];
+                SerialRecvInfo +=
+                    DateTime.Now.ToLongTimeString() + " " + APARCommands.GetStatusMsg(code) + "\r\n";
+            }
+            
         }
         #endregion
 
